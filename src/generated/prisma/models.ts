@@ -8,14 +8,14 @@
  *
  * 🟢 You can import this file directly.
  */
-export type * from './models/Genero.js'
-export type * from './models/Filme.js'
-export type * from './models/Sala.js'
-export type * from './models/Sessao.js'
-export type * from './models/Ingresso.js'
-export type * from './models/LancheCombo.js'
-export type * from './models/Pedido.js'
-export type * from './models/PedidoItem.js'
+export type * from './models/Genre.js'
+export type * from './models/Movie.js'
+export type * from './models/Room.js'
+export type * from './models/Session.js'
+export type * from './models/Ticket.js'
+export type * from './models/SnackCombo.js'
+export type * from './models/Order.js'
+export type * from './models/OrderItem.js'
 export type * from './models/Profile.js'
 export type * from './models/User.js'
 export type * from './models/Address.js'

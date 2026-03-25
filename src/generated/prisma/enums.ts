@@ -9,17 +9,17 @@
 * 🟢 You can import this file directly.
 */
 
-export const IngressoTipo = {
-  INTEIRA: 'INTEIRA',
-  MEIA: 'MEIA'
+export const TicketType = {
+  FULL: 'FULL',
+  HALF: 'HALF'
 } as const
 
-export type IngressoTipo = (typeof IngressoTipo)[keyof typeof IngressoTipo]
+export type TicketType = (typeof TicketType)[keyof typeof TicketType]
 
 
-export const PedidoItemTipo = {
-  INGRESSO: 'INGRESSO',
+export const OrderItemType = {
+  TICKET: 'TICKET',
   COMBO: 'COMBO'
 } as const
 
-export type PedidoItemTipo = (typeof PedidoItemTipo)[keyof typeof PedidoItemTipo]
+export type OrderItemType = (typeof OrderItemType)[keyof typeof OrderItemType]

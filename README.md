@@ -1,20 +1,20 @@
 # Cinema API (NestJS + Prisma + PostgreSQL + Docker)
 
-API REST para gerenciamento de um cinema: filmes, salas, sessoes, ingressos, combos de lanches e pedidos.
-Inclui tambem o modulo de Usuarios, Perfis e Enderecos (Prova N1 - CMP2305).
+RESTful Cinema API with NestJS, Prisma and business rules.
+Includes User, Profile and Address modules (Exam N1 - CMP2305).
 
-## Como rodar (Docker)
+## How to run (Docker)
 
 ```bash
 docker compose build
 docker compose up
 ```
 
-Isso sobe o PostgreSQL e a API automaticamente. As migrations rodam no startup.
+This starts PostgreSQL and the API automatically. Migrations run on startup.
 
-Documentacao interativa (Swagger): `http://localhost:3000/api`
+Swagger docs: `http://localhost:3000/api`
 
-## Resetar tudo (limpar banco e volumes)
+## Reset everything (clean database and volumes)
 
 ```bash
 docker compose down -v
@@ -23,163 +23,163 @@ docker compose up
 
 ---
 
-## Fluxo de criacao dos recursos
+## Resource creation flow
 
-A API possui dependencias entre entidades. Siga a ordem abaixo para cadastrar tudo corretamente.
+The API has dependencies between entities. Follow the order below to register everything correctly.
 
-### Fase 1 - Entidades independentes (sem dependencia)
+### Phase 1 - Independent entities (no dependencies)
 
-Crie estas primeiro, em qualquer ordem:
+Create these first, in any order:
 
-**1. Criar Profile**
+**1. Create Profile**
 ```bash
 curl -X POST http://localhost:3000/profiles \
   -H 'Content-Type: application/json' \
   -d '{"name": "ADMIN"}'
 ```
-> Anote o `id` (UUID) retornado. Voce vai precisar dele para criar um User.
+> Note the `id` (UUID) returned. You will need it to create a User.
 
-**2. Criar Genero**
+**2. Create Genre**
 ```bash
-curl -X POST http://localhost:3000/generos \
+curl -X POST http://localhost:3000/genres \
   -H 'Content-Type: application/json' \
-  -d '{"nome": "Acao"}'
+  -d '{"name": "Action"}'
 ```
-> Anote o `id` retornado. Voce vai precisar dele para criar um Filme.
+> Note the `id` returned. You will need it to create a Movie.
 
-**3. Criar Sala**
+**3. Create Room**
 ```bash
-curl -X POST http://localhost:3000/salas \
+curl -X POST http://localhost:3000/rooms \
   -H 'Content-Type: application/json' \
-  -d '{"identificacao": "Sala 1", "capacidade": 100}'
+  -d '{"identifier": "Room 1", "capacity": 100}'
 ```
-> Anote o `id` retornado. Voce vai precisar dele para criar uma Sessao.
+> Note the `id` returned. You will need it to create a Session.
 
-**4. Criar Lanche/Combo (opcional)**
+**4. Create Snack Combo (optional)**
 ```bash
-curl -X POST http://localhost:3000/lanches-combo \
+curl -X POST http://localhost:3000/snack-combos \
   -H 'Content-Type: application/json' \
-  -d '{"nome": "Combo Pipoca + Refri", "descricao": "Pipoca grande + refrigerante 500ml", "preco": 29.90}'
+  -d '{"name": "Popcorn + Soda Combo", "description": "Large popcorn + 500ml soda", "price": 29.90}'
 ```
-> Anote o `id` se quiser incluir combos em Pedidos.
+> Note the `id` if you want to include combos in Orders.
 
 ---
 
-### Fase 2 - Entidades que dependem da Fase 1
+### Phase 2 - Entities that depend on Phase 1
 
-**5. Criar Filme** (depende de: Genero)
+**5. Create Movie** (depends on: Genre)
 ```bash
-curl -X POST http://localhost:3000/filmes \
+curl -X POST http://localhost:3000/movies \
   -H 'Content-Type: application/json' \
-  -d '{"titulo": "Matrix", "generoId": 1, "duracao": 136, "classificacaoEtaria": "14"}'
+  -d '{"title": "Matrix", "genreId": 1, "duration": 136, "ageRating": "14"}'
 ```
-> Use o `id` do Genero criado na Fase 1.
+> Use the Genre `id` created in Phase 1.
 
-**6. Criar User** (depende de: Profile)
+**6. Create User** (depends on: Profile)
 ```bash
 curl -X POST http://localhost:3000/users \
   -H 'Content-Type: application/json' \
-  -d '{"email": "mateus@example.com", "password": "senha123", "name": "Mateus Gomes", "profileId": "<UUID_DO_PROFILE>"}'
+  -d '{"email": "mateus@example.com", "password": "password123", "name": "Mateus Gomes", "profileId": "<PROFILE_UUID>"}'
 ```
-> Substitua `<UUID_DO_PROFILE>` pelo `id` do Profile criado na Fase 1.
+> Replace `<PROFILE_UUID>` with the Profile `id` from Phase 1.
 
 ---
 
-### Fase 3 - Entidades que dependem da Fase 2
+### Phase 3 - Entities that depend on Phase 2
 
-**7. Criar Sessao** (depende de: Filme + Sala)
+**7. Create Session** (depends on: Movie + Room)
 ```bash
-curl -X POST http://localhost:3000/sessoes \
+curl -X POST http://localhost:3000/sessions \
   -H 'Content-Type: application/json' \
-  -d '{"filmeId": 1, "salaId": 1, "dataHora": "2026-04-01T19:00:00.000Z", "valorIngresso": 25.00}'
+  -d '{"movieId": 1, "roomId": 1, "dateTime": "2026-04-01T19:00:00.000Z", "ticketPrice": 25.00}'
 ```
-> Use os `id`s do Filme e da Sala. A API valida conflito de horario na mesma sala.
+> Use the Movie and Room `id`s. The API validates schedule conflicts in the same room.
 
-**8. Criar Address** (depende de: User) - opcional, 1 por usuario
+**8. Create Address** (depends on: User) - optional, 1 per user
 ```bash
 curl -X POST http://localhost:3000/addresses \
   -H 'Content-Type: application/json' \
-  -d '{"street": "Rua das Flores", "number": 123, "city": "Sao Paulo", "state": "SP", "zipCode": "01001-000", "userId": "<UUID_DO_USER>"}'
+  -d '{"street": "Flower Street", "number": 123, "city": "Sao Paulo", "state": "SP", "zipCode": "01001-000", "userId": "<USER_UUID>"}'
 ```
-> Substitua `<UUID_DO_USER>` pelo `id` do User. Cada usuario pode ter no maximo 1 endereco.
+> Replace `<USER_UUID>` with the User `id`. Each user can have at most 1 address.
 
 ---
 
-### Fase 4 - Entidades que dependem da Fase 3
+### Phase 4 - Entities that depend on Phase 3
 
-**9. Comprar Ingresso** (depende de: Sessao)
+**9. Buy Ticket** (depends on: Session)
 ```bash
-curl -X POST http://localhost:3000/ingressos \
+curl -X POST http://localhost:3000/tickets \
   -H 'Content-Type: application/json' \
-  -d '{"sessaoId": 1, "tipo": "INTEIRA"}'
+  -d '{"sessionId": 1, "type": "FULL"}'
 ```
-> Tipos: `INTEIRA` ou `MEIA`. O valor e calculado automaticamente. A API verifica a capacidade da sala.
+> Types: `FULL` or `HALF`. The value is calculated automatically. The API checks room capacity.
 
-**10. Criar Pedido com itens** (depende de: Ingresso e/ou LancheCombo)
+**10. Create Order with items** (depends on: Ticket and/or SnackCombo)
 ```bash
-curl -X POST http://localhost:3000/pedidos \
+curl -X POST http://localhost:3000/orders \
   -H 'Content-Type: application/json' \
   -d '{
-    "itens": [
-      {"tipo": "INGRESSO", "referenciaId": 1},
-      {"tipo": "COMBO", "referenciaId": 1}
+    "items": [
+      {"type": "TICKET", "referenceId": 1},
+      {"type": "COMBO", "referenceId": 1}
     ]
   }'
 ```
-> `referenciaId` aponta para o `id` de um Ingresso (se tipo = INGRESSO) ou LancheCombo (se tipo = COMBO).
+> `referenceId` points to a Ticket `id` (if type = TICKET) or SnackCombo `id` (if type = COMBO).
 
 ---
 
-## Resumo da ordem
+## Dependency diagram
 
 ```
 Profile ──→ User ──→ Address
-Genero  ──→ Filme ──┐
-Sala  ──────────────┼──→ Sessao ──→ Ingresso ──┐
-LancheCombo ────────────────────────────────────┼──→ Pedido (com itens)
+Genre   ──→ Movie ──┐
+Room  ──────────────┼──→ Session ──→ Ticket ──┐
+SnackCombo ───────────────────────────────────┼──→ Order (with items)
 ```
 
 ## Endpoints
 
 ### Cinema
 
-| Recurso | Rota | Metodos |
-|---------|------|---------|
-| Generos | `/generos` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Filmes | `/filmes` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Salas | `/salas` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Sessoes | `/sessoes` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Ingressos | `/ingressos` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Lanches/Combos | `/lanches-combo` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
-| Pedidos | `/pedidos` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Resource | Route | Methods |
+|----------|-------|---------|
+| Genres | `/genres` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Movies | `/movies` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Rooms | `/rooms` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Sessions | `/sessions` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Tickets | `/tickets` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Snack Combos | `/snack-combos` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
+| Orders | `/orders` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 
-### Usuarios (Prova N1)
+### Users (Exam N1)
 
-| Recurso | Rota | Metodos |
-|---------|------|---------|
+| Resource | Route | Methods |
+|----------|-------|---------|
 | Profiles | `/profiles` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 | Users | `/users` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 | Addresses | `/addresses` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 
-## Relacionamentos
+## Relationships
 
 - Profile 1:N User
 - User 1:1 Address (cascade delete)
-- Genero 1:N Filme
-- Filme 1:N Sessao
-- Sala 1:N Sessao
-- Sessao 1:N Ingresso
-- Pedido 1:N PedidoItem (cascade delete)
+- Genre 1:N Movie
+- Movie 1:N Session
+- Room 1:N Session
+- Session 1:N Ticket
+- Order 1:N OrderItem (cascade delete)
 
-## Desenvolvimento local (sem Docker)
+## Local development (without Docker)
 
 ```bash
 npm install
 ```
 
-Crie o `.env`:
+Create `.env`:
 ```env
-DATABASE_URL="postgresql://prisma:prisma@localhost:5432/cinema"
+DATABASE_URL="postgresql://prisma:prisma@localhost:5433/cinema"
 PORT=3000
 ```
 

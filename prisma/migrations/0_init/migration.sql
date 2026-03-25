@@ -2,88 +2,88 @@
 CREATE SCHEMA IF NOT EXISTS "public";
 
 -- CreateEnum
-CREATE TYPE "IngressoTipo" AS ENUM ('INTEIRA', 'MEIA');
+CREATE TYPE "TicketType" AS ENUM ('FULL', 'HALF');
 
 -- CreateEnum
-CREATE TYPE "PedidoItemTipo" AS ENUM ('INGRESSO', 'COMBO');
+CREATE TYPE "OrderItemType" AS ENUM ('TICKET', 'COMBO');
 
 -- CreateTable
-CREATE TABLE "Genero" (
+CREATE TABLE "Genre" (
     "id" SERIAL NOT NULL,
-    "nome" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
 
-    CONSTRAINT "Genero_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Genre_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Filme" (
+CREATE TABLE "Movie" (
     "id" SERIAL NOT NULL,
-    "titulo" TEXT NOT NULL,
-    "generoId" INTEGER NOT NULL,
-    "duracao" INTEGER NOT NULL,
-    "classificacaoEtaria" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
+    "genreId" INTEGER NOT NULL,
+    "duration" INTEGER NOT NULL,
+    "ageRating" TEXT NOT NULL,
 
-    CONSTRAINT "Filme_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Movie_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Sala" (
+CREATE TABLE "Room" (
     "id" SERIAL NOT NULL,
-    "identificacao" TEXT NOT NULL,
-    "capacidade" INTEGER NOT NULL,
+    "identifier" TEXT NOT NULL,
+    "capacity" INTEGER NOT NULL,
 
-    CONSTRAINT "Sala_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Room_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Sessao" (
+CREATE TABLE "Session" (
     "id" SERIAL NOT NULL,
-    "filmeId" INTEGER NOT NULL,
-    "salaId" INTEGER NOT NULL,
-    "dataHora" TIMESTAMP(3) NOT NULL,
-    "valorIngresso" DOUBLE PRECISION NOT NULL,
+    "movieId" INTEGER NOT NULL,
+    "roomId" INTEGER NOT NULL,
+    "dateTime" TIMESTAMP(3) NOT NULL,
+    "ticketPrice" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "Sessao_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Session_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Ingresso" (
+CREATE TABLE "Ticket" (
     "id" SERIAL NOT NULL,
-    "sessaoId" INTEGER NOT NULL,
-    "tipo" "IngressoTipo" NOT NULL,
-    "valorPago" DOUBLE PRECISION NOT NULL,
+    "sessionId" INTEGER NOT NULL,
+    "type" "TicketType" NOT NULL,
+    "paidValue" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "Ingresso_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Ticket_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "LancheCombo" (
+CREATE TABLE "SnackCombo" (
     "id" SERIAL NOT NULL,
-    "nome" TEXT NOT NULL,
-    "descricao" TEXT NOT NULL,
-    "preco" DOUBLE PRECISION NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "price" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "LancheCombo_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "SnackCombo_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Pedido" (
+CREATE TABLE "Order" (
     "id" SERIAL NOT NULL,
-    "dataHora" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "valorTotal" DOUBLE PRECISION NOT NULL,
+    "dateTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "totalValue" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "Pedido_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "Order_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "PedidoItem" (
+CREATE TABLE "OrderItem" (
     "id" SERIAL NOT NULL,
-    "pedidoId" INTEGER NOT NULL,
-    "tipo" "PedidoItemTipo" NOT NULL,
-    "referenciaId" INTEGER NOT NULL,
-    "valor" DOUBLE PRECISION NOT NULL,
+    "orderId" INTEGER NOT NULL,
+    "type" "OrderItemType" NOT NULL,
+    "referenceId" INTEGER NOT NULL,
+    "value" DOUBLE PRECISION NOT NULL,
 
-    CONSTRAINT "PedidoItem_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "OrderItem_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -125,22 +125,22 @@ CREATE TABLE "Address" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Genero_nome_key" ON "Genero"("nome");
+CREATE UNIQUE INDEX "Genre_name_key" ON "Genre"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Sala_identificacao_key" ON "Sala"("identificacao");
+CREATE UNIQUE INDEX "Room_identifier_key" ON "Room"("identifier");
 
 -- CreateIndex
-CREATE INDEX "Sessao_salaId_dataHora_idx" ON "Sessao"("salaId", "dataHora");
+CREATE INDEX "Session_roomId_dateTime_idx" ON "Session"("roomId", "dateTime");
 
 -- CreateIndex
-CREATE INDEX "Sessao_filmeId_idx" ON "Sessao"("filmeId");
+CREATE INDEX "Session_movieId_idx" ON "Session"("movieId");
 
 -- CreateIndex
-CREATE INDEX "Ingresso_sessaoId_idx" ON "Ingresso"("sessaoId");
+CREATE INDEX "Ticket_sessionId_idx" ON "Ticket"("sessionId");
 
 -- CreateIndex
-CREATE INDEX "PedidoItem_pedidoId_idx" ON "PedidoItem"("pedidoId");
+CREATE INDEX "OrderItem_orderId_idx" ON "OrderItem"("orderId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
@@ -149,19 +149,19 @@ CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
 CREATE UNIQUE INDEX "Address_userId_key" ON "Address"("userId");
 
 -- AddForeignKey
-ALTER TABLE "Filme" ADD CONSTRAINT "Filme_generoId_fkey" FOREIGN KEY ("generoId") REFERENCES "Genero"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Movie" ADD CONSTRAINT "Movie_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sessao" ADD CONSTRAINT "Sessao_filmeId_fkey" FOREIGN KEY ("filmeId") REFERENCES "Filme"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Sessao" ADD CONSTRAINT "Sessao_salaId_fkey" FOREIGN KEY ("salaId") REFERENCES "Sala"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Session" ADD CONSTRAINT "Session_roomId_fkey" FOREIGN KEY ("roomId") REFERENCES "Room"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Ingresso" ADD CONSTRAINT "Ingresso_sessaoId_fkey" FOREIGN KEY ("sessaoId") REFERENCES "Sessao"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Ticket" ADD CONSTRAINT "Ticket_sessionId_fkey" FOREIGN KEY ("sessionId") REFERENCES "Session"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "PedidoItem" ADD CONSTRAINT "PedidoItem_pedidoId_fkey" FOREIGN KEY ("pedidoId") REFERENCES "Pedido"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "OrderItem" ADD CONSTRAINT "OrderItem_orderId_fkey" FOREIGN KEY ("orderId") REFERENCES "Order"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "User" ADD CONSTRAINT "User_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

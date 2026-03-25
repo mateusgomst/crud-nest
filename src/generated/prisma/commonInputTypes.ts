@@ -126,38 +126,38 @@ export type FloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
-export type EnumIngressoTipoFilter<$PrismaModel = never> = {
-  equals?: $Enums.IngressoTipo | Prisma.EnumIngressoTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel> | $Enums.IngressoTipo
+export type EnumTicketTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TicketType | Prisma.EnumTicketTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel> | $Enums.TicketType
 }
 
-export type EnumIngressoTipoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.IngressoTipo | Prisma.EnumIngressoTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumIngressoTipoWithAggregatesFilter<$PrismaModel> | $Enums.IngressoTipo
+export type EnumTicketTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TicketType | Prisma.EnumTicketTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTicketTypeWithAggregatesFilter<$PrismaModel> | $Enums.TicketType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel>
 }
 
-export type EnumPedidoItemTipoFilter<$PrismaModel = never> = {
-  equals?: $Enums.PedidoItemTipo | Prisma.EnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel> | $Enums.PedidoItemTipo
+export type EnumOrderItemTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderItemType | Prisma.EnumOrderItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel> | $Enums.OrderItemType
 }
 
-export type EnumPedidoItemTipoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PedidoItemTipo | Prisma.EnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPedidoItemTipoWithAggregatesFilter<$PrismaModel> | $Enums.PedidoItemTipo
+export type EnumOrderItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderItemType | Prisma.EnumOrderItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.OrderItemType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel>
 }
 
 export type NestedIntFilter<$PrismaModel = never> = {
@@ -270,38 +270,38 @@ export type NestedFloatWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedFloatFilter<$PrismaModel>
 }
 
-export type NestedEnumIngressoTipoFilter<$PrismaModel = never> = {
-  equals?: $Enums.IngressoTipo | Prisma.EnumIngressoTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel> | $Enums.IngressoTipo
+export type NestedEnumTicketTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.TicketType | Prisma.EnumTicketTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel> | $Enums.TicketType
 }
 
-export type NestedEnumIngressoTipoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.IngressoTipo | Prisma.EnumIngressoTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.IngressoTipo[] | Prisma.ListEnumIngressoTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumIngressoTipoWithAggregatesFilter<$PrismaModel> | $Enums.IngressoTipo
+export type NestedEnumTicketTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.TicketType | Prisma.EnumTicketTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.TicketType[] | Prisma.ListEnumTicketTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumTicketTypeWithAggregatesFilter<$PrismaModel> | $Enums.TicketType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumIngressoTipoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumTicketTypeFilter<$PrismaModel>
 }
 
-export type NestedEnumPedidoItemTipoFilter<$PrismaModel = never> = {
-  equals?: $Enums.PedidoItemTipo | Prisma.EnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel> | $Enums.PedidoItemTipo
+export type NestedEnumOrderItemTypeFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderItemType | Prisma.EnumOrderItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel> | $Enums.OrderItemType
 }
 
-export type NestedEnumPedidoItemTipoWithAggregatesFilter<$PrismaModel = never> = {
-  equals?: $Enums.PedidoItemTipo | Prisma.EnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  in?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  notIn?: $Enums.PedidoItemTipo[] | Prisma.ListEnumPedidoItemTipoFieldRefInput<$PrismaModel>
-  not?: Prisma.NestedEnumPedidoItemTipoWithAggregatesFilter<$PrismaModel> | $Enums.PedidoItemTipo
+export type NestedEnumOrderItemTypeWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.OrderItemType | Prisma.EnumOrderItemTypeFieldRefInput<$PrismaModel>
+  in?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  notIn?: $Enums.OrderItemType[] | Prisma.ListEnumOrderItemTypeFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumOrderItemTypeWithAggregatesFilter<$PrismaModel> | $Enums.OrderItemType
   _count?: Prisma.NestedIntFilter<$PrismaModel>
-  _min?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel>
-  _max?: Prisma.NestedEnumPedidoItemTipoFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumOrderItemTypeFilter<$PrismaModel>
 }
 
 

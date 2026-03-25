@@ -29,8 +29,8 @@ export * from "./enums.js"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Generos
- * const generos = await prisma.genero.findMany()
+ * // Fetch zero or more Genres
+ * const genres = await prisma.genre.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,45 +40,45 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model Genero
+ * Model Genre
  * 
  */
-export type Genero = Prisma.GeneroModel
+export type Genre = Prisma.GenreModel
 /**
- * Model Filme
+ * Model Movie
  * 
  */
-export type Filme = Prisma.FilmeModel
+export type Movie = Prisma.MovieModel
 /**
- * Model Sala
+ * Model Room
  * 
  */
-export type Sala = Prisma.SalaModel
+export type Room = Prisma.RoomModel
 /**
- * Model Sessao
+ * Model Session
  * 
  */
-export type Sessao = Prisma.SessaoModel
+export type Session = Prisma.SessionModel
 /**
- * Model Ingresso
+ * Model Ticket
  * 
  */
-export type Ingresso = Prisma.IngressoModel
+export type Ticket = Prisma.TicketModel
 /**
- * Model LancheCombo
+ * Model SnackCombo
  * 
  */
-export type LancheCombo = Prisma.LancheComboModel
+export type SnackCombo = Prisma.SnackComboModel
 /**
- * Model Pedido
+ * Model Order
  * 
  */
-export type Pedido = Prisma.PedidoModel
+export type Order = Prisma.OrderModel
 /**
- * Model PedidoItem
+ * Model OrderItem
  * 
  */
-export type PedidoItem = Prisma.PedidoItemModel
+export type OrderItem = Prisma.OrderItemModel
 /**
  * Model Profile
  * 

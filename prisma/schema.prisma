@@ -14,95 +14,95 @@ datasource db {
 	provider = "postgresql"
 }
 
-enum IngressoTipo {
-	INTEIRA
-	MEIA
+enum TicketType {
+	FULL
+	HALF
 }
 
-enum PedidoItemTipo {
-	INGRESSO
+enum OrderItemType {
+	TICKET
 	COMBO
 }
 
-model Genero {
+model Genre {
 	id     Int     @id @default(autoincrement())
-	nome   String  @unique
-	filmes Filme[]
+	name   String  @unique
+	movies Movie[]
 }
 
-model Filme {
-	id                  Int      @id @default(autoincrement())
-	titulo              String
-	generoId            Int
-	duracao             Int
-	classificacaoEtaria String
+model Movie {
+	id        Int      @id @default(autoincrement())
+	title     String
+	genreId   Int
+	duration  Int
+	ageRating String
 
-	genero  Genero   @relation(fields: [generoId], references: [id])
-	sessoes Sessao[]
+	genre    Genre     @relation(fields: [genreId], references: [id])
+	sessions Session[]
 }
 
-model Sala {
-	id            Int      @id @default(autoincrement())
-	identificacao String   @unique
-	capacidade    Int
+model Room {
+	id         Int      @id @default(autoincrement())
+	identifier String   @unique
+	capacity   Int
 
-	sessoes Sessao[]
+	sessions Session[]
 }
 
-model Sessao {
-	id            Int      @id @default(autoincrement())
-	filmeId       Int
-	salaId        Int
-	dataHora      DateTime
-	valorIngresso Float
+model Session {
+	id          Int      @id @default(autoincrement())
+	movieId     Int
+	roomId      Int
+	dateTime    DateTime
+	ticketPrice Float
 
-	filme     Filme      @relation(fields: [filmeId], references: [id])
-	sala      Sala       @relation(fields: [salaId], references: [id])
-	ingressos Ingresso[]
+	movie   Movie    @relation(fields: [movieId], references: [id])
+	room    Room     @relation(fields: [roomId], references: [id])
+	tickets Ticket[]
 
-	@@index([salaId, dataHora])
-	@@index([filmeId])
+	@@index([roomId, dateTime])
+	@@index([movieId])
 }
 
-model Ingresso {
-	id        Int          @id @default(autoincrement())
-	sessaoId  Int
-	tipo      IngressoTipo
-	valorPago Float
+model Ticket {
+	id        Int        @id @default(autoincrement())
+	sessionId Int
+	type      TicketType
+	paidValue Float
 
-	sessao Sessao @relation(fields: [sessaoId], references: [id])
+	session Session @relation(fields: [sessionId], references: [id])
 
-	@@index([sessaoId])
+	@@index([sessionId])
 }
 
-model LancheCombo {
-	id        Int     @id @default(autoincrement())
-	nome      String
-	descricao String
-	preco     Float
+model SnackCombo {
+	id          Int     @id @default(autoincrement())
+	name        String
+	description String
+	price       Float
 }
 
-model Pedido {
+model Order {
 	id         Int          @id @default(autoincrement())
-	dataHora   DateTime     @default(now())
-	valorTotal Float
+	dateTime   DateTime     @default(now())
+	totalValue Float
 
-	itens PedidoItem[]
+	items OrderItem[]
 }
 
-model PedidoItem {
-	id           Int           @id @default(autoincrement())
-	pedidoId     Int
-	tipo         PedidoItemTipo
-	referenciaId Int
-	valor        Float
+model OrderItem {
+	id          Int           @id @default(autoincrement())
+	orderId     Int
+	type        OrderItemType
+	referenceId Int
+	value       Float
 
-	pedido Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+	order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
 
-	@@index([pedidoId])
+	@@index([orderId])
 }
 
-// ── Entidades da Prova N1 ──────────────────────────────────
+// ── Exam N1 Entities ──────────────────────────────────
 
 model Profile {
 	id        String   @id @default(uuid())

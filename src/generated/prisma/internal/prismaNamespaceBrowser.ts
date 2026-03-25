@@ -51,14 +51,14 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  Genero: 'Genero',
-  Filme: 'Filme',
-  Sala: 'Sala',
-  Sessao: 'Sessao',
-  Ingresso: 'Ingresso',
-  LancheCombo: 'LancheCombo',
-  Pedido: 'Pedido',
-  PedidoItem: 'PedidoItem',
+  Genre: 'Genre',
+  Movie: 'Movie',
+  Room: 'Room',
+  Session: 'Session',
+  Ticket: 'Ticket',
+  SnackCombo: 'SnackCombo',
+  Order: 'Order',
+  OrderItem: 'OrderItem',
   Profile: 'Profile',
   User: 'User',
   Address: 'Address'
@@ -80,83 +80,83 @@ export const TransactionIsolationLevel = runtime.makeStrictEnum({
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const GeneroScalarFieldEnum = {
+export const GenreScalarFieldEnum = {
   id: 'id',
-  nome: 'nome'
+  name: 'name'
 } as const
 
-export type GeneroScalarFieldEnum = (typeof GeneroScalarFieldEnum)[keyof typeof GeneroScalarFieldEnum]
+export type GenreScalarFieldEnum = (typeof GenreScalarFieldEnum)[keyof typeof GenreScalarFieldEnum]
 
 
-export const FilmeScalarFieldEnum = {
+export const MovieScalarFieldEnum = {
   id: 'id',
-  titulo: 'titulo',
-  generoId: 'generoId',
-  duracao: 'duracao',
-  classificacaoEtaria: 'classificacaoEtaria'
+  title: 'title',
+  genreId: 'genreId',
+  duration: 'duration',
+  ageRating: 'ageRating'
 } as const
 
-export type FilmeScalarFieldEnum = (typeof FilmeScalarFieldEnum)[keyof typeof FilmeScalarFieldEnum]
+export type MovieScalarFieldEnum = (typeof MovieScalarFieldEnum)[keyof typeof MovieScalarFieldEnum]
 
 
-export const SalaScalarFieldEnum = {
+export const RoomScalarFieldEnum = {
   id: 'id',
-  identificacao: 'identificacao',
-  capacidade: 'capacidade'
+  identifier: 'identifier',
+  capacity: 'capacity'
 } as const
 
-export type SalaScalarFieldEnum = (typeof SalaScalarFieldEnum)[keyof typeof SalaScalarFieldEnum]
+export type RoomScalarFieldEnum = (typeof RoomScalarFieldEnum)[keyof typeof RoomScalarFieldEnum]
 
 
-export const SessaoScalarFieldEnum = {
+export const SessionScalarFieldEnum = {
   id: 'id',
-  filmeId: 'filmeId',
-  salaId: 'salaId',
-  dataHora: 'dataHora',
-  valorIngresso: 'valorIngresso'
+  movieId: 'movieId',
+  roomId: 'roomId',
+  dateTime: 'dateTime',
+  ticketPrice: 'ticketPrice'
 } as const
 
-export type SessaoScalarFieldEnum = (typeof SessaoScalarFieldEnum)[keyof typeof SessaoScalarFieldEnum]
+export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]
 
 
-export const IngressoScalarFieldEnum = {
+export const TicketScalarFieldEnum = {
   id: 'id',
-  sessaoId: 'sessaoId',
-  tipo: 'tipo',
-  valorPago: 'valorPago'
+  sessionId: 'sessionId',
+  type: 'type',
+  paidValue: 'paidValue'
 } as const
 
-export type IngressoScalarFieldEnum = (typeof IngressoScalarFieldEnum)[keyof typeof IngressoScalarFieldEnum]
+export type TicketScalarFieldEnum = (typeof TicketScalarFieldEnum)[keyof typeof TicketScalarFieldEnum]
 
 
-export const LancheComboScalarFieldEnum = {
+export const SnackComboScalarFieldEnum = {
   id: 'id',
-  nome: 'nome',
-  descricao: 'descricao',
-  preco: 'preco'
+  name: 'name',
+  description: 'description',
+  price: 'price'
 } as const
 
-export type LancheComboScalarFieldEnum = (typeof LancheComboScalarFieldEnum)[keyof typeof LancheComboScalarFieldEnum]
+export type SnackComboScalarFieldEnum = (typeof SnackComboScalarFieldEnum)[keyof typeof SnackComboScalarFieldEnum]
 
 
-export const PedidoScalarFieldEnum = {
+export const OrderScalarFieldEnum = {
   id: 'id',
-  dataHora: 'dataHora',
-  valorTotal: 'valorTotal'
+  dateTime: 'dateTime',
+  totalValue: 'totalValue'
 } as const
 
-export type PedidoScalarFieldEnum = (typeof PedidoScalarFieldEnum)[keyof typeof PedidoScalarFieldEnum]
+export type OrderScalarFieldEnum = (typeof OrderScalarFieldEnum)[keyof typeof OrderScalarFieldEnum]
 
 
-export const PedidoItemScalarFieldEnum = {
+export const OrderItemScalarFieldEnum = {
   id: 'id',
-  pedidoId: 'pedidoId',
-  tipo: 'tipo',
-  referenciaId: 'referenciaId',
-  valor: 'valor'
+  orderId: 'orderId',
+  type: 'type',
+  referenceId: 'referenceId',
+  value: 'value'
 } as const
 
-export type PedidoItemScalarFieldEnum = (typeof PedidoItemScalarFieldEnum)[keyof typeof PedidoItemScalarFieldEnum]
+export type OrderItemScalarFieldEnum = (typeof OrderItemScalarFieldEnum)[keyof typeof OrderItemScalarFieldEnum]
 
 
 export const ProfileScalarFieldEnum = {
