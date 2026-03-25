@@ -1,70 +1,113 @@
-import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
+import { PedidoItemTipo } from '../enums/pedido-item-tipo.enum';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
 
+type PedidoItemData = {
+  tipo: PedidoItemTipo;
+  referenciaId: number;
+  valor: number;
+};
+
 @Injectable()
 export class PedidosService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  async create(createPedidoDto: CreatePedidoDto) {
-    return this.prisma.$transaction(async (tx) => {
-      const produto = await tx.produto.findUnique({
-        where: { id: createPedidoDto.produtoId },
-        select: { id: true, estoque: true },
-      });
+  private async mapItensComValor(itens: CreatePedidoDto['itens']): Promise<PedidoItemData[]> {
+    const itensComValor = await Promise.all(
+      itens.map(async (item) => {
+        if (item.tipo === PedidoItemTipo.INGRESSO) {
+          const ingresso = await this.prisma.ingresso.findUnique({
+            where: { id: item.referenciaId },
+            select: { valorPago: true },
+          });
+          if (!ingresso) {
+            throw new NotFoundException(`Ingresso ${item.referenciaId} nao encontrado.`);
+          }
+          return {
+            tipo: PedidoItemTipo.INGRESSO,
+            referenciaId: item.referenciaId,
+            valor: ingresso.valorPago,
+          };
+        }
 
-      if (!produto) {
-        throw new NotFoundException('Produto informado nao existe.');
-      }
+        const combo = await this.prisma.lancheCombo.findUnique({
+          where: { id: item.referenciaId },
+          select: { preco: true },
+        });
+        if (!combo) {
+          throw new NotFoundException(`Combo ${item.referenciaId} nao encontrado.`);
+        }
+        return {
+          tipo: PedidoItemTipo.COMBO,
+          referenciaId: item.referenciaId,
+          valor: combo.preco,
+        };
+      }),
+    );
 
-      if (produto.estoque <= 0) {
-        throw new BadRequestException('Produto sem estoque para criar pedido.');
-      }
+    return itensComValor;
+  }
 
-      await tx.produto.update({
-        where: { id: produto.id },
-        data: { estoque: { decrement: 1 } },
-      });
+  async create(dto: CreatePedidoDto) {
+    const itensComValor = await this.mapItensComValor(dto.itens);
+    const valorTotal = itensComValor.reduce((acc, item) => acc + item.valor, 0);
 
-      return tx.pedido.create({ data: createPedidoDto });
+    return this.prisma.pedido.create({
+      data: {
+        valorTotal,
+        itens: {
+          create: itensComValor,
+        },
+      },
+      include: { itens: true },
     });
   }
 
   findAll() {
-    return this.prisma.pedido.findMany({ include: { produto: true } });
-  }
-
-  findOne(id: number) {
-    return this.prisma.pedido.findUnique({
-      where: { id },
-      include: { produto: true },
+    return this.prisma.pedido.findMany({
+      include: { itens: true },
+      orderBy: { dataHora: 'desc' },
     });
   }
 
-  async update(id: number, updatePedidoDto: UpdatePedidoDto) {
-    if (updatePedidoDto.produtoId) {
-      await this.ensureProdutoExists(updatePedidoDto.produtoId);
+  async findOne(id: number) {
+    const pedido = await this.prisma.pedido.findUnique({
+      where: { id },
+      include: { itens: true },
+    });
+    if (!pedido) {
+      throw new NotFoundException('Pedido nao encontrado.');
     }
+    return pedido;
+  }
+
+  async update(id: number, dto: UpdatePedidoDto) {
+    await this.findOne(id);
+
+    if (!dto.itens) {
+      return this.findOne(id);
+    }
+
+    const itensComValor = await this.mapItensComValor(dto.itens);
+    const valorTotal = itensComValor.reduce((acc, item) => acc + item.valor, 0);
 
     return this.prisma.pedido.update({
       where: { id },
-      data: updatePedidoDto,
+      data: {
+        valorTotal,
+        itens: {
+          deleteMany: {},
+          create: itensComValor,
+        },
+      },
+      include: { itens: true },
     });
   }
 
-  remove(id: number) {
+  async remove(id: number) {
+    await this.findOne(id);
     return this.prisma.pedido.delete({ where: { id } });
-  }
-
-  private async ensureProdutoExists(produtoId: number) {
-    const produto = await this.prisma.produto.findUnique({
-      where: { id: produtoId },
-      select: { id: true },
-    });
-
-    if (!produto) {
-      throw new NotFoundException('Produto informado nao existe.');
-    }
   }
 }

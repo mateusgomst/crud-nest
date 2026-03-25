@@ -29,8 +29,8 @@ export * from "./enums.js"
  * const prisma = new PrismaClient({
  *   adapter: new PrismaPg({ connectionString: process.env.DATABASE_URL })
  * })
- * // Fetch zero or more Users
- * const users = await prisma.user.findMany()
+ * // Fetch zero or more Generos
+ * const generos = await prisma.genero.findMany()
  * ```
  * 
  * Read more in our [docs](https://pris.ly/d/client).
@@ -40,17 +40,57 @@ export type PrismaClient<LogOpts extends Prisma.LogLevel = never, OmitOpts exten
 export { Prisma }
 
 /**
- * Model User
+ * Model Genero
  * 
  */
-export type User = Prisma.UserModel
+export type Genero = Prisma.GeneroModel
+/**
+ * Model Filme
+ * 
+ */
+export type Filme = Prisma.FilmeModel
+/**
+ * Model Sala
+ * 
+ */
+export type Sala = Prisma.SalaModel
+/**
+ * Model Sessao
+ * 
+ */
+export type Sessao = Prisma.SessaoModel
+/**
+ * Model Ingresso
+ * 
+ */
+export type Ingresso = Prisma.IngressoModel
+/**
+ * Model LancheCombo
+ * 
+ */
+export type LancheCombo = Prisma.LancheComboModel
 /**
  * Model Pedido
  * 
  */
 export type Pedido = Prisma.PedidoModel
 /**
- * Model Produto
+ * Model PedidoItem
  * 
  */
-export type Produto = Prisma.ProdutoModel
+export type PedidoItem = Prisma.PedidoItemModel
+/**
+ * Model Profile
+ * 
+ */
+export type Profile = Prisma.ProfileModel
+/**
+ * Model User
+ * 
+ */
+export type User = Prisma.UserModel
+/**
+ * Model Address
+ * 
+ */
+export type Address = Prisma.AddressModel

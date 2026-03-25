@@ -5,19 +5,31 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  // Ativa validação dos DTOs
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true,
+    }),
+  );
 
-  // Configuração do Swagger
   const config = new DocumentBuilder()
-    .setTitle('User CRUD API')
-    .setDescription('Documentação da API de Usuários com NestJS e Prisma')
+    .setTitle('Cinema API')
+    .setDescription('API RESTful de cinema com NestJS, Prisma e regras de negocio.')
     .setVersion('1.0')
+    .addTag('generos')
+    .addTag('filmes')
+    .addTag('salas')
+    .addTag('sessoes')
+    .addTag('ingressos')
+    .addTag('lanches-combo')
+    .addTag('pedidos')
+    .addTag('profiles')
     .addTag('users')
+    .addTag('addresses')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  // Rota onde o Swagger estará disponíve
   SwaggerModule.setup('api', app, document);
 
   await app.listen(process.env.PORT ?? 3000);

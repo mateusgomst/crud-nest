@@ -1,57 +1,45 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
 } from '@nestjs/common';
-import { PedidosService } from './pedidos.service';
+import { ApiTags } from '@nestjs/swagger';
 import { CreatePedidoDto } from './dto/create-pedido.dto';
 import { UpdatePedidoDto } from './dto/update-pedido.dto';
-import { ApiOperation, ApiResponse } from '@nestjs/swagger';
+import { PedidosService } from './pedidos.service';
 
+@ApiTags('pedidos')
 @Controller('pedidos')
 export class PedidosController {
-  constructor(private readonly pedidosService: PedidosService) {}
+  constructor(private readonly service: PedidosService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Criar um novo pedido' })
-  @ApiResponse({ status: 201, description: 'Pedido criado com sucesso.' })
-  @ApiResponse({ status: 400, description: 'Erro ao criar pedido.' })
-  create(@Body() createPedidoDto: CreatePedidoDto) {
-    return this.pedidosService.create(createPedidoDto);
+  create(@Body() dto: CreatePedidoDto) {
+    return this.service.create(dto);
   }
 
   @Get()
-  @ApiOperation({ summary: 'Listar todos os pedidos' })
-  @ApiResponse({ status: 200, description: 'Lista de pedidos retornada com sucesso.' })
   findAll() {
-    return this.pedidosService.findAll();
+    return this.service.findAll();
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Buscar um pedido por ID' })
-  @ApiResponse({ status: 200, description: 'Pedido encontrado com sucesso.' })
-  @ApiResponse({ status: 404, description: 'Pedido nao encontrado.' })
-  findOne(@Param('id') id: string) {
-    return this.pedidosService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.service.findOne(id);
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Atualizar um pedido por ID' })
-  @ApiResponse({ status: 200, description: 'Pedido atualizado com sucesso.' })
-  @ApiResponse({ status: 404, description: 'Pedido nao encontrado.' })
-  update(@Param('id') id: string, @Body() updatePedidoDto: UpdatePedidoDto) {
-    return this.pedidosService.update(+id, updatePedidoDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() dto: UpdatePedidoDto) {
+    return this.service.update(id, dto);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Remover um pedido por ID' })
-  @ApiResponse({ status: 200, description: 'Pedido removido com sucesso.' })
-  @ApiResponse({ status: 404, description: 'Pedido nao encontrado.' })
-  remove(@Param('id') id: string) {
-    return this.pedidosService.remove(+id);
+  remove(@Param('id', ParseIntPipe) id: number) {
+    return this.service.remove(id);
   }
 }

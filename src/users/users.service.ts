@@ -1,32 +1,74 @@
-import { Injectable } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {}
 
-  create(createUserDto: CreateUserDto) {
-    return this.prisma.user.create({ data: createUserDto });
+  async create(dto: CreateUserDto) {
+    const profile = await this.prisma.profile.findUnique({
+      where: { id: dto.profileId },
+    });
+    if (!profile) {
+      throw new NotFoundException('Profile nao encontrado.');
+    }
+    try {
+      return await this.prisma.user.create({
+        data: dto,
+        include: { profile: true, address: true },
+      });
+    } catch {
+      throw new ConflictException('Ja existe um usuario com esse email.');
+    }
   }
 
   findAll() {
-    return this.prisma.user.findMany();
-  }
-
-  findOne(id: number) {
-    return this.prisma.user.findUnique({ where: { id } });
-  }
-
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return this.prisma.user.update({
-      where: { id },
-      data: updateUserDto,
+    return this.prisma.user.findMany({
+      orderBy: { name: 'asc' },
+      include: { profile: true, address: true },
     });
   }
 
-  remove(id: number) {
+  async findOne(id: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { id },
+      include: { profile: true, address: true },
+    });
+    if (!user) {
+      throw new NotFoundException('Usuario nao encontrado.');
+    }
+    return user;
+  }
+
+  async update(id: string, dto: UpdateUserDto) {
+    await this.findOne(id);
+    if (dto.profileId) {
+      const profile = await this.prisma.profile.findUnique({
+        where: { id: dto.profileId },
+      });
+      if (!profile) {
+        throw new NotFoundException('Profile nao encontrado.');
+      }
+    }
+    try {
+      return await this.prisma.user.update({
+        where: { id },
+        data: dto,
+        include: { profile: true, address: true },
+      });
+    } catch {
+      throw new ConflictException('Ja existe um usuario com esse email.');
+    }
+  }
+
+  async remove(id: string) {
+    await this.findOne(id);
     return this.prisma.user.delete({ where: { id } });
   }
 }

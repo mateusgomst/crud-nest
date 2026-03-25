@@ -5,41 +5,139 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-	provider = "prisma-client"
-	output = "../src/generated/prisma"
+	provider     = "prisma-client"
+	output       = "../src/generated/prisma"
 	moduleFormat = "cjs"
 }
 
 datasource db {
-	provider = "sqlite"
+	provider = "postgresql"
 }
 
-model User {
+enum IngressoTipo {
+	INTEIRA
+	MEIA
+}
 
-	id Int @id @default(autoincrement())
-	email String @unique
-	name String?
-	password String
-	createdAt DateTime @default(now())
-	updateAt DateTime @updatedAt
+enum PedidoItemTipo {
+	INGRESSO
+	COMBO
+}
+
+model Genero {
+	id     Int     @id @default(autoincrement())
+	nome   String  @unique
+	filmes Filme[]
+}
+
+model Filme {
+	id                  Int      @id @default(autoincrement())
+	titulo              String
+	generoId            Int
+	duracao             Int
+	classificacaoEtaria String
+
+	genero  Genero   @relation(fields: [generoId], references: [id])
+	sessoes Sessao[]
+}
+
+model Sala {
+	id            Int      @id @default(autoincrement())
+	identificacao String   @unique
+	capacidade    Int
+
+	sessoes Sessao[]
+}
+
+model Sessao {
+	id            Int      @id @default(autoincrement())
+	filmeId       Int
+	salaId        Int
+	dataHora      DateTime
+	valorIngresso Float
+
+	filme     Filme      @relation(fields: [filmeId], references: [id])
+	sala      Sala       @relation(fields: [salaId], references: [id])
+	ingressos Ingresso[]
+
+	@@index([salaId, dataHora])
+	@@index([filmeId])
+}
+
+model Ingresso {
+	id        Int          @id @default(autoincrement())
+	sessaoId  Int
+	tipo      IngressoTipo
+	valorPago Float
+
+	sessao Sessao @relation(fields: [sessaoId], references: [id])
+
+	@@index([sessaoId])
+}
+
+model LancheCombo {
+	id        Int     @id @default(autoincrement())
+	nome      String
+	descricao String
+	preco     Float
 }
 
 model Pedido {
-	id Int @id @default(autoincrement())
-	userId Int
-	nome String
-	produtoId Int
-	produto Produto @relation(fields: [produtoId], references: [id], onDelete: Cascade)
+	id         Int          @id @default(autoincrement())
+	dataHora   DateTime     @default(now())
+	valorTotal Float
+
+	itens PedidoItem[]
+}
+
+model PedidoItem {
+	id           Int           @id @default(autoincrement())
+	pedidoId     Int
+	tipo         PedidoItemTipo
+	referenciaId Int
+	valor        Float
+
+	pedido Pedido @relation(fields: [pedidoId], references: [id], onDelete: Cascade)
+
+	@@index([pedidoId])
+}
+
+// ── Entidades da Prova N1 ──────────────────────────────────
+
+model Profile {
+	id        String   @id @default(uuid())
+	name      String
+	createdAt DateTime @default(now())
+	updatedAt DateTime @updatedAt
+
+	users User[]
+}
+
+model User {
+	id        String   @id @default(uuid())
+	email     String   @unique
+	password  String
+	name      String
+	profileId String
+
+	profile Profile  @relation(fields: [profileId], references: [id])
+	address Address?
+
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 }
 
-model Produto {
-	id Int @id @default(autoincrement())
-	nome String
-	preco Float
-	estoque Int @default(0)
-	pedidos Pedido[]
+model Address {
+	id      String @id @default(uuid())
+	street  String
+	number  Int
+	city    String
+	state   String
+	zipCode String
+	userId  String @unique
+
+	user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
 	createdAt DateTime @default(now())
 	updatedAt DateTime @updatedAt
 }

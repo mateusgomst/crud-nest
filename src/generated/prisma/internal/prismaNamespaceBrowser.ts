@@ -51,9 +51,17 @@ export const AnyNull = runtime.AnyNull
 
 
 export const ModelName = {
-  User: 'User',
+  Genero: 'Genero',
+  Filme: 'Filme',
+  Sala: 'Sala',
+  Sessao: 'Sessao',
+  Ingresso: 'Ingresso',
+  LancheCombo: 'LancheCombo',
   Pedido: 'Pedido',
-  Produto: 'Produto'
+  PedidoItem: 'PedidoItem',
+  Profile: 'Profile',
+  User: 'User',
+  Address: 'Address'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -63,46 +71,130 @@ export type ModelName = (typeof ModelName)[keyof typeof ModelName]
  */
 
 export const TransactionIsolationLevel = runtime.makeStrictEnum({
+  ReadUncommitted: 'ReadUncommitted',
+  ReadCommitted: 'ReadCommitted',
+  RepeatableRead: 'RepeatableRead',
   Serializable: 'Serializable'
 } as const)
 
 export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
 
 
-export const UserScalarFieldEnum = {
+export const GeneroScalarFieldEnum = {
   id: 'id',
-  email: 'email',
-  name: 'name',
-  password: 'password',
-  createdAt: 'createdAt',
-  updateAt: 'updateAt'
+  nome: 'nome'
 } as const
 
-export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+export type GeneroScalarFieldEnum = (typeof GeneroScalarFieldEnum)[keyof typeof GeneroScalarFieldEnum]
+
+
+export const FilmeScalarFieldEnum = {
+  id: 'id',
+  titulo: 'titulo',
+  generoId: 'generoId',
+  duracao: 'duracao',
+  classificacaoEtaria: 'classificacaoEtaria'
+} as const
+
+export type FilmeScalarFieldEnum = (typeof FilmeScalarFieldEnum)[keyof typeof FilmeScalarFieldEnum]
+
+
+export const SalaScalarFieldEnum = {
+  id: 'id',
+  identificacao: 'identificacao',
+  capacidade: 'capacidade'
+} as const
+
+export type SalaScalarFieldEnum = (typeof SalaScalarFieldEnum)[keyof typeof SalaScalarFieldEnum]
+
+
+export const SessaoScalarFieldEnum = {
+  id: 'id',
+  filmeId: 'filmeId',
+  salaId: 'salaId',
+  dataHora: 'dataHora',
+  valorIngresso: 'valorIngresso'
+} as const
+
+export type SessaoScalarFieldEnum = (typeof SessaoScalarFieldEnum)[keyof typeof SessaoScalarFieldEnum]
+
+
+export const IngressoScalarFieldEnum = {
+  id: 'id',
+  sessaoId: 'sessaoId',
+  tipo: 'tipo',
+  valorPago: 'valorPago'
+} as const
+
+export type IngressoScalarFieldEnum = (typeof IngressoScalarFieldEnum)[keyof typeof IngressoScalarFieldEnum]
+
+
+export const LancheComboScalarFieldEnum = {
+  id: 'id',
+  nome: 'nome',
+  descricao: 'descricao',
+  preco: 'preco'
+} as const
+
+export type LancheComboScalarFieldEnum = (typeof LancheComboScalarFieldEnum)[keyof typeof LancheComboScalarFieldEnum]
 
 
 export const PedidoScalarFieldEnum = {
   id: 'id',
-  userId: 'userId',
-  nome: 'nome',
-  produtoId: 'produtoId',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  dataHora: 'dataHora',
+  valorTotal: 'valorTotal'
 } as const
 
 export type PedidoScalarFieldEnum = (typeof PedidoScalarFieldEnum)[keyof typeof PedidoScalarFieldEnum]
 
 
-export const ProdutoScalarFieldEnum = {
+export const PedidoItemScalarFieldEnum = {
   id: 'id',
-  nome: 'nome',
-  preco: 'preco',
-  estoque: 'estoque',
+  pedidoId: 'pedidoId',
+  tipo: 'tipo',
+  referenciaId: 'referenciaId',
+  valor: 'valor'
+} as const
+
+export type PedidoItemScalarFieldEnum = (typeof PedidoItemScalarFieldEnum)[keyof typeof PedidoItemScalarFieldEnum]
+
+
+export const ProfileScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
 
-export type ProdutoScalarFieldEnum = (typeof ProdutoScalarFieldEnum)[keyof typeof ProdutoScalarFieldEnum]
+export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeof ProfileScalarFieldEnum]
+
+
+export const UserScalarFieldEnum = {
+  id: 'id',
+  email: 'email',
+  password: 'password',
+  name: 'name',
+  profileId: 'profileId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
+
+
+export const AddressScalarFieldEnum = {
+  id: 'id',
+  street: 'street',
+  number: 'number',
+  city: 'city',
+  state: 'state',
+  zipCode: 'zipCode',
+  userId: 'userId',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AddressScalarFieldEnum = (typeof AddressScalarFieldEnum)[keyof typeof AddressScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -113,10 +205,10 @@ export const SortOrder = {
 export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
 
 
-export const NullsOrder = {
-  first: 'first',
-  last: 'last'
+export const QueryMode = {
+  default: 'default',
+  insensitive: 'insensitive'
 } as const
 
-export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
