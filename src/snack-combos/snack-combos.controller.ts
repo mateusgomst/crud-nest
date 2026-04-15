@@ -9,15 +9,19 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 import { CreateSnackComboDto } from './dto/create-snack-combo.dto';
 import { UpdateSnackComboDto } from './dto/update-snack-combo.dto';
 import { SnackCombosService } from './snack-combos.service';
 
 @ApiTags('snack-combos')
 @Controller('snack-combos')
+@Roles(Role.USER, Role.ADMIN)
 export class SnackCombosController {
   constructor(private readonly service: SnackCombosService) {}
 
+  @Roles(Role.ADMIN)
   @Post()
   create(@Body() dto: CreateSnackComboDto) {
     return this.service.create(dto);
@@ -33,6 +37,7 @@ export class SnackCombosController {
     return this.service.findOne(id);
   }
 
+  @Roles(Role.ADMIN)
   @Patch(':id')
   update(
     @Param('id', ParseIntPipe) id: number,
@@ -41,6 +46,7 @@ export class SnackCombosController {
     return this.service.update(id, dto);
   }
 
+  @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.service.remove(id);

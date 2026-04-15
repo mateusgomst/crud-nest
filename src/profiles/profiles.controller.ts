@@ -8,12 +8,15 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { ProfilesService } from './profiles.service';
 
 @ApiTags('profiles')
 @Controller('profiles')
+@Roles(Role.ADMIN)
 export class ProfilesController {
   constructor(private readonly service: ProfilesService) {}
 

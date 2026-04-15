@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateMovieDto } from './dto/create-movie.dto';
 import { UpdateMovieDto } from './dto/update-movie.dto';
@@ -47,6 +47,17 @@ export class MoviesService {
 
   async remove(id: number) {
     await this.findOne(id);
+
+    const linkedSessions = await this.prisma.session.count({
+      where: { movieId: id },
+    });
+
+    if (linkedSessions > 0) {
+      throw new BadRequestException(
+        'Nao e possivel excluir este filme porque ele possui sessoes vinculadas.',
+      );
+    }
+
     return this.prisma.movie.delete({ where: { id } });
   }
 }

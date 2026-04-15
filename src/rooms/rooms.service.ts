@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -42,6 +43,17 @@ export class RoomsService {
 
   async remove(id: number) {
     await this.findOne(id);
+
+    const linkedSessions = await this.prisma.session.count({
+      where: { roomId: id },
+    });
+
+    if (linkedSessions > 0) {
+      throw new BadRequestException(
+        'Nao e possivel excluir esta sala porque ela possui sessoes vinculadas.',
+      );
+    }
+
     return this.prisma.room.delete({ where: { id } });
   }
 }

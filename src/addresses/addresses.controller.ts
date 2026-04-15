@@ -8,12 +8,15 @@ import {
   Post,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { Role } from '../enums/role.enum';
 import { CreateAddressDto } from './dto/create-address.dto';
 import { UpdateAddressDto } from './dto/update-address.dto';
 import { AddressesService } from './addresses.service';
 
 @ApiTags('addresses')
 @Controller('addresses')
+@Roles(Role.USER, Role.ADMIN)
 export class AddressesController {
   constructor(private readonly service: AddressesService) {}
 

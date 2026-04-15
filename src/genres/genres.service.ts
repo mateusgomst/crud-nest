@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
@@ -42,6 +43,17 @@ export class GenresService {
 
   async remove(id: number) {
     await this.findOne(id);
+
+    const linkedMovies = await this.prisma.movie.count({
+      where: { genreId: id },
+    });
+
+    if (linkedMovies > 0) {
+      throw new BadRequestException(
+        'Nao e possivel excluir este genero porque ele possui filmes vinculados.',
+      );
+    }
+
     return this.prisma.genre.delete({ where: { id } });
   }
 }

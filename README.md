@@ -3,6 +3,28 @@
 RESTful Cinema API with NestJS, Prisma and business rules.
 Includes User, Profile and Address modules (Exam N1 - CMP2305).
 
+## Global Docker (frontend + backend + database)
+
+From the project root (`projeto-fullstack`), run:
+
+```bash
+docker compose build
+docker compose up
+```
+
+Services started together:
+
+- Frontend (Vite): `http://localhost:5173`
+- Backend API: `http://localhost:3000`
+- Swagger: `http://localhost:3000/api`
+- PostgreSQL: `localhost:5433`
+
+To stop and remove volumes:
+
+```bash
+docker compose down -v
+```
+
 ## How to run (Docker)
 
 ```bash
@@ -13,6 +35,21 @@ docker compose up
 This starts PostgreSQL and the API automatically. Migrations run on startup.
 
 Swagger docs: `http://localhost:3000/api`
+
+## Authentication (JWT)
+
+The API now includes authentication with JWT.
+
+- `POST /auth/register`: public route to register a new user in the `USER` group.
+- `POST /auth/login`: public route to authenticate and receive `accessToken`.
+- `GET /auth/me`: protected route (`Authorization: Bearer <token>`) to get the authenticated user.
+
+Default groups are created automatically when the app starts: `ADMIN` and `USER`.
+
+Default admin user is also created automatically (if it does not exist):
+
+- Email: `admin@gmail.com`
+- Password: `admin`
 
 ## Reset everything (clean database and volumes)
 
@@ -161,6 +198,12 @@ SnackCombo ───────────────────────
 | Users | `/users` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 | Addresses | `/addresses` | GET, POST, GET/:id, PATCH/:id, DELETE/:id |
 
+### Authentication
+
+| Resource | Route | Methods |
+|----------|-------|---------|
+| Auth | `/auth` | POST `/register`, POST `/login`, GET `/me` |
+
 ## Relationships
 
 - Profile 1:N User
@@ -181,6 +224,8 @@ Create `.env`:
 ```env
 DATABASE_URL="postgresql://prisma:prisma@localhost:5433/cinema"
 PORT=3000
+JWT_SECRET="change-this-secret"
+JWT_EXPIRES_IN="1d"
 ```
 
 ```bash

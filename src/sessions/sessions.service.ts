@@ -143,6 +143,17 @@ export class SessionsService {
 
   async remove(id: number) {
     await this.findOne(id);
+
+    const linkedTickets = await this.prisma.ticket.count({
+      where: { sessionId: id },
+    });
+
+    if (linkedTickets > 0) {
+      throw new BadRequestException(
+        'Nao e possivel excluir esta sessao porque ela possui ingressos vinculados.',
+      );
+    }
+
     return this.prisma.session.delete({ where: { id } });
   }
 }

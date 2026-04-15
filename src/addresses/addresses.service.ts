@@ -11,6 +11,15 @@ import { UpdateAddressDto } from './dto/update-address.dto';
 export class AddressesService {
   constructor(private readonly prisma: PrismaService) {}
 
+  private readonly userPublicSelect = {
+    id: true,
+    email: true,
+    name: true,
+    profileId: true,
+    createdAt: true,
+    updatedAt: true,
+  } as const;
+
   async create(dto: CreateAddressDto) {
     const user = await this.prisma.user.findUnique({
       where: { id: dto.userId },
@@ -21,7 +30,7 @@ export class AddressesService {
     try {
       return await this.prisma.address.create({
         data: dto,
-        include: { user: true },
+        include: { user: { select: this.userPublicSelect } },
       });
     } catch {
       throw new ConflictException('Este usuario ja possui um endereco cadastrado.');
@@ -31,14 +40,14 @@ export class AddressesService {
   findAll() {
     return this.prisma.address.findMany({
       orderBy: { city: 'asc' },
-      include: { user: true },
+      include: { user: { select: this.userPublicSelect } },
     });
   }
 
   async findOne(id: string) {
     const address = await this.prisma.address.findUnique({
       where: { id },
-      include: { user: true },
+      include: { user: { select: this.userPublicSelect } },
     });
     if (!address) {
       throw new NotFoundException('Endereco nao encontrado.');
@@ -60,7 +69,7 @@ export class AddressesService {
       return await this.prisma.address.update({
         where: { id },
         data: dto,
-        include: { user: true },
+        include: { user: { select: this.userPublicSelect } },
       });
     } catch {
       throw new ConflictException('Este usuario ja possui um endereco cadastrado.');
